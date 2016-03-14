@@ -1,0 +1,21 @@
+## Plot 3
+# Energy Sub metering plots
+
+# Read file and format Date and Time to DateTime
+powerConsumption <- read.table("./household_power_consumption.txt", sep=";", header = TRUE, na.strings = "?", stringsAsFactors = FALSE)
+powerConsumption$DateTime <- as.POSIXct(powerConsumption$DateTime, format = "%d/%m/%Y %H:%M:%S")
+
+# Subset of the (powerConsumption) data for specified dates
+subset <- filter(powerConsumption, DateTime >= as.POSIXct("2007-02-01 00:00:00"), DateTime < as.POSIXct("2007-02-03 00:00:00"))
+
+# Create Plot
+plot(subset$DateTime,subset$Sub_metering_1, type = "l", xlab = "", ylab = "Energy sub metering",ylim=c(0,45))
+par(new = TRUE)
+plot(subset$DateTime,subset$Sub_metering_2, type = "l", col = "red", xlab = "", ylab = "Energy sub metering",ylim=c(0,45))
+par(new = TRUE)
+plot(subset$DateTime,subset$Sub_metering_3, type = "l", col = "blue", xlab = "", ylab = "Energy sub metering",ylim=c(0,45))
+legend('topright', c("Sub_metering_1","Sub_metering_2","Sub_metering_3"), lty=c(1,1), lwd=c(2.5,2.5),col=c("black","red","blue"))
+
+# Create .png file
+dev.copy(png,"plot3.png")
+dev.off()
